@@ -1,0 +1,1070 @@
+// import Link from "next/link";
+// import type { Metadata } from "next";
+
+// export const dynamic = "force-dynamic";
+// export const revalidate = 0;
+
+// export const metadata: Metadata = {
+//   metadataBase: new URL("https://your-domain.com"), // Change after deployment
+//   title: "Hospital Management System | Smart Healthcare Dashboard",
+//   description:
+//     "A modern hospital management system for managing patients, doctors, appointments, rooms, billing and hospital administration from one secure dashboard.",
+//   keywords: [
+//     "hospital management system",
+//     "healthcare dashboard",
+//     "patient management",
+//     "doctor management",
+//     "appointment system",
+//     "hospital admin panel",
+//     "medical management software",
+//   ],
+//   authors: [{ name: "Hospital Management System" }],
+//   creator: "Hospital Management System",
+//   openGraph: {
+//     title: "Hospital Management System | Smart Healthcare Dashboard",
+//     description:
+//       "Manage patients, doctors, appointments, rooms, billing and hospital operations from one secure platform.",
+//     url: "/",
+//     siteName: "Hospital Management System",
+//     type: "website",
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: "Hospital Management System | Smart Healthcare Dashboard",
+//     description:
+//       "A modern dashboard for hospital administration, patient records, appointments and billing.",
+//   },
+//   robots: {
+//     index: true,
+//     follow: true,
+//   },
+// };
+
+// const features = [
+//   {
+//     title: "Doctor Management",
+//     description:
+//       "Manage doctor profiles, schedules, departments and availability from one dashboard.",
+//     icon: "👨‍⚕️",
+//   },
+//   {
+//     title: "Patient Records",
+//     description:
+//       "Store and organize patient information, medical records and treatment history.",
+//     icon: "🧑‍🤝‍🧑",
+//   },
+//   {
+//     title: "Appointments",
+//     description:
+//       "Schedule, update and monitor doctor-patient appointments with ease.",
+//     icon: "📅",
+//   },
+//   {
+//     title: "Room Management",
+//     description:
+//       "Track room availability, admission status and patient placement.",
+//     icon: "🏥",
+//   },
+//   {
+//     title: "Billing System",
+//     description:
+//       "Create bills, manage payments and organize hospital financial records.",
+//     icon: "💳",
+//   },
+//   {
+//     title: "Reports",
+//     description:
+//       "View hospital activity, patient data and admin summaries in a clean format.",
+//     icon: "📊",
+//   },
+// ];
+
+// const structuredData = {
+//   "@context": "https://schema.org",
+//   "@type": "SoftwareApplication",
+//   name: "Hospital Management System",
+//   applicationCategory: "HealthcareApplication",
+//   operatingSystem: "Web",
+//   description:
+//     "A modern hospital management system for managing patients, doctors, appointments, rooms, billing and hospital administration.",
+//   offers: {
+//     "@type": "Offer",
+//     price: "0",
+//     priceCurrency: "USD",
+//   },
+// };
+
+// export default function HomePage() {
+//   return (
+//     <>
+//       <script
+//         type="application/ld+json"
+//         suppressHydrationWarning
+//         dangerouslySetInnerHTML={{
+//           __html: JSON.stringify(structuredData),
+//         }}
+//       />
+
+//       <main className="min-h-screen bg-slate-950 text-white">
+//         {/* Navbar */}
+//         <header className="border-b border-white/10">
+//           <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
+//             <Link href="/" className="text-2xl font-bold tracking-tight">
+//               Hospital<span className="text-cyan-400">Care</span>
+//             </Link>
+
+//             <div className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+//               <Link href="/" className="transition hover:text-white">
+//                 Home
+//               </Link>
+//               <a href="#features" className="transition hover:text-white">
+//                 Features
+//               </a>
+//               <a href="#services" className="transition hover:text-white">
+//                 Services
+//               </a>
+//               <a href="#about" className="transition hover:text-white">
+//                 About
+//               </a>
+//             </div>
+
+//             <div className="flex items-center gap-3">
+//               <Link
+//                 href="/admin/login"
+//                 className="rounded-xl border border-cyan-400 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950"
+//               >
+//                 Login
+//               </Link>
+
+//               <Link
+//                 href="/admin/signup"
+//                 className="hidden rounded-xl bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 sm:inline-block"
+//               >
+//                 Signup
+//               </Link>
+//             </div>
+//           </nav>
+//         </header>
+
+//         {/* Hero Section */}
+//         <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:py-24">
+//           <div>
+//             <p className="mb-5 inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-300">
+//               Smart Hospital Management System
+//             </p>
+
+//             <h1 className="max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+//               Manage your hospital operations from one powerful dashboard.
+//             </h1>
+
+//             <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+//               A modern hospital management system for handling patients,
+//               doctors, appointments, rooms, billing, reports and admin
+//               activities in a simple and secure way.
+//             </p>
+
+//             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+//               <Link
+//                 href="/admin/signup"
+//                 className="rounded-xl bg-cyan-500 px-6 py-3 text-center text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/25 transition hover:bg-cyan-400"
+//               >
+//                 Get Started
+//               </Link>
+
+//               <Link
+//                 href="/admin/login"
+//                 className="rounded-xl border border-slate-600 px-6 py-3 text-center text-sm font-bold text-white transition hover:border-cyan-400 hover:text-cyan-300"
+//               >
+//                 Admin Login
+//               </Link>
+//             </div>
+
+//             <div className="mt-10 grid grid-cols-3 gap-5 border-t border-slate-800 pt-8">
+//               <div>
+//                 <h2 className="text-2xl font-bold text-cyan-300">24/7</h2>
+//                 <p className="mt-1 text-sm text-slate-400">Access</p>
+//               </div>
+
+//               <div>
+//                 <h2 className="text-2xl font-bold text-cyan-300">100%</h2>
+//                 <p className="mt-1 text-sm text-slate-400">Digital</p>
+//               </div>
+
+//               <div>
+//                 <h2 className="text-2xl font-bold text-cyan-300">Fast</h2>
+//                 <p className="mt-1 text-sm text-slate-400">Management</p>
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="relative">
+//             <div className="absolute -inset-4 rounded-[2rem] bg-cyan-500/20 blur-3xl" />
+
+//             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur">
+//               <div className="rounded-3xl bg-white p-6 text-slate-900">
+//                 <div className="mb-6 flex items-center justify-between">
+//                   <div>
+//                     <p className="text-sm font-semibold text-slate-500">
+//                       Today Overview
+//                     </p>
+//                     <h2 className="mt-1 text-2xl font-bold">
+//                       Hospital Dashboard
+//                     </h2>
+//                   </div>
+
+//                   <div className="rounded-2xl bg-cyan-100 px-4 py-2 text-sm font-bold text-cyan-700">
+//                     Live
+//                   </div>
+//                 </div>
+
+//                 <div className="grid gap-4 sm:grid-cols-2">
+//                   <div className="rounded-2xl bg-slate-100 p-5">
+//                     <p className="text-sm text-slate-500">Patients</p>
+//                     <h3 className="mt-2 text-3xl font-bold">245</h3>
+//                     <p className="mt-2 text-sm text-green-600">+12 today</p>
+//                   </div>
+
+//                   <div className="rounded-2xl bg-slate-100 p-5">
+//                     <p className="text-sm text-slate-500">Doctors</p>
+//                     <h3 className="mt-2 text-3xl font-bold">38</h3>
+//                     <p className="mt-2 text-sm text-green-600">Available</p>
+//                   </div>
+
+//                   <div className="rounded-2xl bg-slate-100 p-5">
+//                     <p className="text-sm text-slate-500">Appointments</p>
+//                     <h3 className="mt-2 text-3xl font-bold">89</h3>
+//                     <p className="mt-2 text-sm text-cyan-700">Scheduled</p>
+//                   </div>
+
+//                   <div className="rounded-2xl bg-slate-100 p-5">
+//                     <p className="text-sm text-slate-500">Rooms</p>
+//                     <h3 className="mt-2 text-3xl font-bold">16</h3>
+//                     <p className="mt-2 text-sm text-orange-600">Occupied</p>
+//                   </div>
+//                 </div>
+
+//                 <div className="mt-5 rounded-2xl bg-slate-950 p-5 text-white">
+//                   <div className="flex items-center justify-between">
+//                     <div>
+//                       <p className="text-sm text-slate-400">
+//                         Next Appointment
+//                       </p>
+//                       <h3 className="mt-1 text-lg font-semibold">
+//                         Patient Consultation
+//                       </h3>
+//                     </div>
+
+//                     <p className="rounded-xl bg-cyan-500 px-3 py-2 text-sm font-bold text-slate-950">
+//                       10:30 AM
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* Features */}
+//         <section id="features" className="bg-white px-6 py-20 text-slate-900">
+//           <div className="mx-auto max-w-7xl">
+//             <div className="mx-auto max-w-2xl text-center">
+//               <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-700">
+//                 Features
+//               </p>
+
+//               <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+//                 Everything your hospital needs
+//               </h2>
+
+//               <p className="mt-4 text-slate-500">
+//                 Simple tools to make hospital management faster, cleaner and
+//                 more organized.
+//               </p>
+//             </div>
+
+//             <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+//               {features.map((feature) => (
+//                 <article
+//                   key={feature.title}
+//                   className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+//                 >
+//                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-100 text-xl">
+//                     {feature.icon}
+//                   </div>
+
+//                   <h3 className="text-xl font-bold">{feature.title}</h3>
+
+//                   <p className="mt-3 text-sm leading-6 text-slate-500">
+//                     {feature.description}
+//                   </p>
+//                 </article>
+//               ))}
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* Services */}
+//         <section
+//           id="services"
+//           className="bg-slate-100 px-6 py-20 text-slate-900"
+//         >
+//           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+//             <div>
+//               <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-700">
+//                 Services
+//               </p>
+
+//               <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+//                 Built for better hospital workflow
+//               </h2>
+
+//               <p className="mt-5 leading-8 text-slate-600">
+//                 This system helps hospital admins reduce paperwork, improve
+//                 data accuracy and manage daily operations from a clean web
+//                 interface.
+//               </p>
+
+//               <div className="mt-8 grid gap-4">
+//                 <div className="rounded-2xl bg-white p-5 shadow-sm">
+//                   <h3 className="font-bold">Secure Admin Access</h3>
+//                   <p className="mt-2 text-sm text-slate-500">
+//                     Login and signup pages with Zod validation for clean input
+//                     handling.
+//                   </p>
+//                 </div>
+
+//                 <div className="rounded-2xl bg-white p-5 shadow-sm">
+//                   <h3 className="font-bold">Responsive Design</h3>
+//                   <p className="mt-2 text-sm text-slate-500">
+//                     Tailwind CSS layout that works on mobile, tablet and
+//                     desktop.
+//                   </p>
+//                 </div>
+
+//                 <div className="rounded-2xl bg-white p-5 shadow-sm">
+//                   <h3 className="font-bold">Easy Navigation</h3>
+//                   <p className="mt-2 text-sm text-slate-500">
+//                     Clear routes for home, login and signup pages.
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl">
+//               <h3 className="text-2xl font-bold">
+//                 Why choose this system?
+//               </h3>
+
+//               <div className="mt-8 space-y-5">
+//                 <div className="flex gap-4">
+//                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-sm font-bold text-slate-950">
+//                     1
+//                   </span>
+//                   <div>
+//                     <h4 className="font-semibold">Simple Interface</h4>
+//                     <p className="mt-1 text-sm text-slate-400">
+//                       Clean design that is easy for admins to understand.
+//                     </p>
+//                   </div>
+//                 </div>
+
+//                 <div className="flex gap-4">
+//                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-sm font-bold text-slate-950">
+//                     2
+//                   </span>
+//                   <div>
+//                     <h4 className="font-semibold">Fast Management</h4>
+//                     <p className="mt-1 text-sm text-slate-400">
+//                       Quickly manage hospital data from one place.
+//                     </p>
+//                   </div>
+//                 </div>
+
+//                 <div className="flex gap-4">
+//                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-sm font-bold text-slate-950">
+//                     3
+//                   </span>
+//                   <div>
+//                     <h4 className="font-semibold">Modern Tech Stack</h4>
+//                     <p className="mt-1 text-sm text-slate-400">
+//                       Built with Next.js, TypeScript, Tailwind CSS and Zod.
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* CTA */}
+//         <section id="about" className="bg-white px-6 py-20 text-slate-900">
+//           <div className="mx-auto max-w-5xl rounded-[2rem] bg-gradient-to-br from-cyan-700 via-blue-800 to-slate-950 p-8 text-center text-white shadow-2xl sm:p-12">
+//             <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-200">
+//               Start Now
+//             </p>
+
+//             <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+//               Ready to manage your hospital smarter?
+//             </h2>
+
+//             <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
+//               Create an admin account or login to access the hospital
+//               management dashboard.
+//             </p>
+
+//             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+//               <Link
+//                 href="/admin/signup"
+//                 className="rounded-xl bg-white px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-100"
+//               >
+//                 Create Account
+//               </Link>
+
+//               <Link
+//                 href="/admin/login"
+//                 className="rounded-xl border border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+//               >
+//                 Login
+//               </Link>
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* Footer */}
+//         <footer className="border-t border-slate-800 bg-slate-950 px-6 py-8">
+//           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-center text-sm text-slate-400 sm:flex-row">
+//             <p>
+//               © {new Date().getFullYear()} HospitalCare. All rights reserved.
+//             </p>
+
+//             <div className="flex gap-5">
+//               <Link href="/admin/login" className="hover:text-cyan-300">
+//                 Login
+//               </Link>
+//               <Link href="/admin/signup" className="hover:text-cyan-300">
+//                 Signup
+//               </Link>
+//             </div>
+//           </div>
+//         </footer>
+//       </main>
+//     </>
+//   );
+// }
+
+import Image from "next/image";
+import Link from "next/link";
+import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Smart HealthCare | Hospital Management System",
+  description:
+    "Smart HealthCare is a modern hospital management system for doctors, patients, departments, appointments and healthcare services.",
+  keywords: [
+    "hospital management system",
+    "medical center",
+    "healthcare website",
+    "doctor appointment",
+    "patient management",
+    "hospital dashboard",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+const departments = [
+  {
+    title: "Dentistry",
+    icon: "🦷",
+    description:
+      "Professional dental care services for diagnosis, treatment and oral health management.",
+  },
+  {
+    title: "Cardiology",
+    icon: "❤️",
+    description:
+      "Heart care services with expert doctors, modern diagnosis and patient monitoring.",
+  },
+  {
+    title: "ENT Specialists",
+    icon: "👂",
+    description:
+      "Ear, nose and throat care for patients with specialist consultation support.",
+  },
+  {
+    title: "Orthopedic",
+    icon: "🦴",
+    description:
+      "Bone, joint and muscle care with proper treatment planning and recovery support.",
+  },
+  {
+    title: "Neurology",
+    icon: "🧠",
+    description:
+      "Neurology consultation for brain, nerves and related medical conditions.",
+  },
+  {
+    title: "Blood Screening",
+    icon: "🩸",
+    description:
+      "Quick and organized screening services for safe medical decision making.",
+  },
+];
+
+const doctors = [
+  {
+    name: "Alvin Maxwell",
+    role: "Medicine Specialist",
+    image: "/medicalcenter/gallery/team1.png",
+  },
+  {
+    name: "Maria Smith",
+    role: "Cardiology Specialist",
+    image: "/medicalcenter/gallery/team2.png",
+  },
+  {
+    name: "Angela Doe",
+    role: "Dental Specialist",
+    image: "/medicalcenter/gallery/team3.png",
+  },
+];
+
+const blogs = [
+  {
+    category: "Health",
+    date: "Nov 30, 2026",
+    title: "Amazing Places To Visit In Summer",
+    image: "/medicalcenter/gallery/blog1.png",
+  },
+  {
+    category: "Checkup",
+    date: "Nov 30, 2026",
+    title: "Developing Care Without Losing Quality",
+    image: "/medicalcenter/gallery/blog2.png",
+  },
+  {
+    category: "Operation",
+    date: "Nov 30, 2026",
+    title: "Winter Healthcare Tips From Doctors",
+    image: "/medicalcenter/gallery/blog3.png",
+  },
+];
+
+export default function HomePage() {
+  return (
+    <main className="min-h-screen bg-white text-slate-900">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-white shadow-sm">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/medicalcenter/logo/logo.png"
+              alt="Smart HealthCare Logo"
+              width={150}
+              height={45}
+              priority
+            />
+          </Link>
+
+          <div className="hidden items-center gap-8 text-sm font-semibold text-slate-700 lg:flex">
+            <Link href="/" className="transition hover:text-blue-600">
+              Home
+            </Link>
+            <a href="#about" className="transition hover:text-blue-600">
+              About
+            </a>
+            <a href="#doctors" className="transition hover:text-blue-600">
+              Doctors
+            </a>
+            <a href="#departments" className="transition hover:text-blue-600">
+              Department
+            </a>
+            <a href="#blog" className="transition hover:text-blue-600">
+              Blog
+            </a>
+            <a href="#contact" className="transition hover:text-blue-600">
+              Contact
+            </a>
+            <Link
+              href="/admin/login"
+              className="transition hover:text-blue-600"
+            >
+              Login
+            </Link>
+          </div>
+
+          <Link
+            href="/admin/signup"
+            className="hidden rounded bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 md:inline-block"
+          >
+            01654.066.456
+          </Link>
+        </nav>
+      </header>
+
+      {/* Hero */}
+      <section className="relative min-h-[720px] overflow-hidden bg-[#eef7ff]">
+        <Image
+          src="/medicalcenter/hero/h1_hero.png"
+          alt="Medical center hero"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+
+        <div className="relative z-10 mx-auto flex min-h-[720px] max-w-7xl items-center px-5 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="mb-5 text-lg font-semibold text-blue-600">
+              Committed to success
+            </p>
+
+            <h1 className="text-5xl font-black leading-tight text-slate-900 sm:text-6xl lg:text-7xl">
+              We care about your{" "}
+              <span className="text-blue-600">health</span>
+            </h1>
+
+            <p className="mt-7 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+              Manage doctors, patients, appointments, departments and hospital
+              services from one smart healthcare management system.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/admin/signup"
+                className="rounded bg-blue-600 px-8 py-4 text-center text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-700"
+              >
+                Appointment →
+              </Link>
+
+              <Link
+                href="/admin/login"
+                className="rounded border border-blue-600 px-8 py-4 text-center text-sm font-bold uppercase tracking-wide text-blue-600 transition hover:bg-blue-600 hover:text-white"
+              >
+                Admin Login
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className="px-5 py-24 lg:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
+          <div>
+            <p className="text-lg font-semibold text-blue-600">
+              About Our Company
+            </p>
+
+            <h2 className="mt-4 max-w-xl text-4xl font-black leading-tight text-slate-900 sm:text-5xl">
+              Welcome To Our Hospital
+            </h2>
+
+            <p className="mt-6 max-w-xl text-base leading-8 text-slate-600">
+              Smart HealthCare helps hospitals organize daily work such as
+              doctor management, patient records, appointments, departments and
+              medical services.
+            </p>
+
+            <div className="mt-8 grid gap-4">
+              <Link
+                href="#doctors"
+                className="inline-flex w-fit rounded bg-blue-600 px-7 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
+              >
+                Find Doctors →
+              </Link>
+
+              <Link
+                href="/admin/signup"
+                className="inline-flex w-fit rounded border border-blue-600 px-7 py-4 text-sm font-bold uppercase text-blue-600 transition hover:bg-blue-600 hover:text-white"
+              >
+                Appointment →
+              </Link>
+
+              <Link
+                href="#contact"
+                className="inline-flex w-fit rounded border border-blue-600 px-7 py-4 text-sm font-bold uppercase text-blue-600 transition hover:bg-blue-600 hover:text-white"
+              >
+                Emergency →
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative min-h-[620px]">
+            <Image
+              src="/medicalcenter/gallery/about1.png"
+              alt="Hospital doctor"
+              width={360}
+              height={617}
+              className="absolute bottom-0 right-0 z-20 rounded-lg"
+            />
+
+            <Image
+              src="/medicalcenter/gallery/about2.png"
+              alt="Hospital service"
+              width={360}
+              height={617}
+              className="absolute left-0 top-0 z-10 rounded-lg shadow-2xl"
+            />
+
+            <div className="absolute bottom-8 left-8 z-30 rounded bg-blue-600 px-8 py-6 text-white shadow-xl">
+              <p className="text-4xl font-black">24+</p>
+              <p className="mt-1 text-sm font-semibold uppercase">
+                Years Experience
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Departments */}
+      <section id="departments" className="bg-slate-50 px-5 py-24 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-lg font-semibold text-blue-600">
+              Our Departments
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black text-slate-900 sm:text-5xl">
+              Our Medical Services
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {departments.map((department) => (
+              <article
+                key={department.title}
+                className="rounded bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded bg-blue-50 text-3xl">
+                  {department.icon}
+                </div>
+
+                <h3 className="mt-6 text-2xl font-bold text-slate-900">
+                  {department.title}
+                </h3>
+
+                <p className="mt-4 leading-7 text-slate-600">
+                  {department.description}
+                </p>
+
+                <Link
+                  href="/admin/signup"
+                  className="mt-6 inline-flex font-bold text-blue-600 hover:text-blue-700"
+                >
+                  Appointment →
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Medical Service Highlight */}
+      <section className="px-5 py-24 lg:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+          <div className="relative overflow-hidden rounded-lg bg-blue-50">
+            <Image
+              src="/medicalcenter/gallery/department.png"
+              alt="Medical department"
+              width={520}
+              height={420}
+              className="h-auto w-full"
+            />
+          </div>
+
+          <div>
+            <p className="text-lg font-semibold text-blue-600">
+              Professional Care
+            </p>
+
+            <h2 className="mt-4 max-w-xl text-4xl font-black leading-tight">
+              Dentist with surgical mask holding scaler near patient
+            </h2>
+
+            <p className="mt-6 leading-8 text-slate-600">
+              Our platform supports organized appointment booking, patient care
+              and department management so hospital staff can work faster and
+              smarter.
+            </p>
+
+            <Link
+              href="/admin/signup"
+              className="mt-8 inline-flex rounded bg-blue-600 px-8 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
+            >
+              Appointment →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery CTA */}
+      <section className="relative overflow-hidden bg-blue-700 px-5 py-24 text-white lg:px-8">
+        <Image
+          src="/medicalcenter/gallery/section_bg01.png"
+          alt="Medical background"
+          fill
+          className="object-cover opacity-20"
+        />
+
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <p className="text-lg font-semibold text-blue-100">Our Gallery</p>
+
+          <h2 className="mt-4 text-4xl font-black sm:text-5xl">
+            Our Medical Camp
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-2xl leading-8 text-blue-50">
+            We provide smart healthcare services with professional doctors,
+            helpful staff and a modern hospital management system.
+          </p>
+
+          <Link
+            href="/admin/signup"
+            className="mt-8 inline-flex rounded bg-white px-8 py-4 text-sm font-bold uppercase text-blue-700 transition hover:bg-blue-50"
+          >
+            Make Appointment
+          </Link>
+        </div>
+      </section>
+
+      {/* Doctors */}
+      <section id="doctors" className="px-5 py-24 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-lg font-semibold text-blue-600">Our Doctors</p>
+
+            <h2 className="mt-4 text-4xl font-black text-slate-900 sm:text-5xl">
+              Our Specialist
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-3">
+            {doctors.map((doctor) => (
+              <article
+                key={doctor.name}
+                className="overflow-hidden rounded bg-white text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <Image
+                  src={doctor.image}
+                  alt={doctor.name}
+                  width={360}
+                  height={444}
+                  className="h-auto w-full"
+                />
+
+                <div className="p-7">
+                  <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                  <p className="mt-2 text-sm font-semibold text-blue-600">
+                    {doctor.role}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Appointment Form */}
+      <section
+        id="contact"
+        className="bg-slate-50 px-5 py-24 lg:px-8"
+      >
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+          <div>
+            <p className="text-lg font-semibold text-blue-600">
+              Appointment Apply Form
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black text-slate-900 sm:text-5xl">
+              Appointment Form
+            </h2>
+
+            <form className="mt-10 grid gap-5">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="rounded border border-slate-200 bg-white px-5 py-4 outline-none focus:border-blue-600"
+                />
+
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="rounded border border-slate-200 bg-white px-5 py-4 outline-none focus:border-blue-600"
+                />
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <select className="rounded border border-slate-200 bg-white px-5 py-4 outline-none focus:border-blue-600">
+                  <option>Health Law</option>
+                  <option>Cardiology</option>
+                  <option>Dentistry</option>
+                  <option>Neurology</option>
+                </select>
+
+                <select className="rounded border border-slate-200 bg-white px-5 py-4 outline-none focus:border-blue-600">
+                  <option>Choose Doctor</option>
+                  <option>Alvin Maxwell</option>
+                  <option>Maria Smith</option>
+                  <option>Angela Doe</option>
+                </select>
+              </div>
+
+              <textarea
+                placeholder="Message"
+                rows={5}
+                className="rounded border border-slate-200 bg-white px-5 py-4 outline-none focus:border-blue-600"
+              />
+
+              <button
+                type="submit"
+                className="w-fit rounded bg-blue-600 px-8 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
+              >
+                Submit Now →
+              </button>
+            </form>
+          </div>
+
+          <div className="relative">
+            <Image
+              src="/medicalcenter/gallery/contact_form.png"
+              alt="Appointment contact form"
+              width={650}
+              height={650}
+              className="h-auto w-full"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Blog */}
+      <section id="blog" className="px-5 py-24 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-lg font-semibold text-blue-600">
+              Our Recent News
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black text-slate-900 sm:text-5xl">
+              Our News From Blog
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-3">
+            {blogs.map((blog) => (
+              <article
+                key={blog.title}
+                className="overflow-hidden rounded bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <Image
+                  src={blog.image}
+                  alt={blog.title}
+                  width={360}
+                  height={250}
+                  className="h-60 w-full object-cover"
+                />
+
+                <div className="p-7">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-bold text-blue-600">
+                      {blog.category}
+                    </span>
+                    <span className="text-slate-500">{blog.date}</span>
+                  </div>
+
+                  <h3 className="mt-5 text-xl font-bold leading-7">
+                    {blog.title}
+                  </h3>
+
+                  <Link
+                    href="/admin/login"
+                    className="mt-6 inline-flex font-bold text-blue-600 hover:text-blue-700"
+                  >
+                    Read more →
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#111a3a] px-5 py-16 text-white lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
+          <div>
+            <Image
+              src="/medicalcenter/logo/logo2_footer.png"
+              alt="Smart HealthCare Footer Logo"
+              width={160}
+              height={45}
+            />
+
+            <p className="mt-6 leading-7 text-blue-100">
+              Smart HealthCare helps manage hospital services, doctors,
+              patients and appointments from one modern platform.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold">Quick Links</h3>
+
+            <div className="mt-6 grid gap-3 text-blue-100">
+              <Link href="/" className="hover:text-white">
+                Home
+              </Link>
+              <a href="#about" className="hover:text-white">
+                About
+              </a>
+              <a href="#doctors" className="hover:text-white">
+                Doctors
+              </a>
+              <a href="#departments" className="hover:text-white">
+                Departments
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold">Contact</h3>
+
+            <div className="mt-6 grid gap-3 text-blue-100">
+              <p>+564 7885 3222</p>
+              <p>smarthealthcare@hms.com</p>
+              <p>Dhaka, Bangladesh</p>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold">Admin</h3>
+
+            <div className="mt-6 grid gap-4">
+              <Link
+                href="/admin/login"
+                className="rounded bg-white px-5 py-3 text-center text-sm font-bold text-blue-700"
+              >
+                Login
+              </Link>
+
+              <Link
+                href="/admin/signup"
+                className="rounded border border-white/40 px-5 py-3 text-center text-sm font-bold text-white hover:bg-white/10"
+              >
+                Appointment
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-12 max-w-7xl border-t border-white/10 pt-8 text-center text-sm text-blue-100">
+          © {new Date().getFullYear()} Smart HealthCare. All rights reserved.
+        </div>
+      </footer>
+    </main>
+  );
+}
