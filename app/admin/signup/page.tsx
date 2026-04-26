@@ -115,7 +115,7 @@ export default function SignupPage(): JSX.Element {
         <div className="hidden bg-gradient-to-br from-emerald-700 via-cyan-800 to-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-200">
-              Hospital Management
+              Medicore Hospital Management
             </p>
 
             <h1 className="mt-6 max-w-md text-4xl font-bold leading-tight">
@@ -126,7 +126,7 @@ export default function SignupPage(): JSX.Element {
           <div className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur">
             <p className="text-sm text-emerald-100">Admin Signup</p>
             <p className="mt-2 text-2xl font-semibold">
-              Simple and secure registration
+              Secure registration
             </p>
             <p className="mt-3 text-sm leading-6 text-slate-200">
               Register using your full name, username, email and password.

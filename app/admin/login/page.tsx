@@ -87,7 +87,7 @@ export default function LoginPage(): JSX.Element {
         <div className="hidden bg-gradient-to-br from-cyan-700 via-blue-800 to-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-200">
-              Hospital Management
+              Medicore Hospital Management
             </p>
 
             <h1 className="mt-6 max-w-md text-4xl font-bold leading-tight">

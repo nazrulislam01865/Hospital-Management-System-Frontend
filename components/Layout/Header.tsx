@@ -1,7 +1,61 @@
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Header() {
+type HeaderProps = {
+  props?: {
+    page?: string;
+    activePage?: string;
+    ctaText?: string;
+    ctaHref?: string;
+  };
+};
+
+export default function Header({ props }: HeaderProps) {
+  const page = props?.page || "Smart HealthCare";
+  const activePage = props?.activePage || "home";
+  const ctaText = props?.ctaText || "Appointment";
+  const ctaHref = props?.ctaHref || "/admin/signup";
+
+  useEffect(() => {
+    document.title = page;
+  }, [page]);
+
+  const navItems = [
+    {
+      label: "Home",
+      href: "/",
+      key: "home",
+    },
+    {
+      label: "About",
+      href: "#about",
+      key: "about",
+    },
+    {
+      label: "Doctors",
+      href: "#doctors",
+      key: "doctors",
+    },
+    {
+      label: "Department",
+      href: "#departments",
+      key: "departments",
+    },
+    {
+      label: "Blog",
+      href: "#blog",
+      key: "blog",
+    },
+    {
+      label: "Contact",
+      href: "#contact",
+      key: "contact",
+    },
+  ];
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8">
@@ -17,40 +71,33 @@ export default function Header() {
         </Link>
 
         <div className="hidden items-center gap-8 text-sm font-semibold text-slate-700 lg:flex">
-          <Link href="/" className="transition hover:text-blue-600">
-            Home
-          </Link>
+          {navItems.map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              className={`transition hover:text-blue-600 ${
+                activePage === item.key ? "text-blue-600" : "text-slate-700"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
 
-          <a href="#about" className="transition hover:text-blue-600">
-            About
-          </a>
-
-          <a href="#doctors" className="transition hover:text-blue-600">
-            Doctors
-          </a>
-
-          <a href="#departments" className="transition hover:text-blue-600">
-            Department
-          </a>
-
-          <a href="#blog" className="transition hover:text-blue-600">
-            Blog
-          </a>
-
-          <a href="#contact" className="transition hover:text-blue-600">
-            Contact
-          </a>
-
-          <Link href="/admin/login" className="transition hover:text-blue-600">
+          <Link
+            href="/admin/login"
+            className={`transition hover:text-blue-600 ${
+              activePage === "login" ? "text-blue-600" : "text-slate-700"
+            }`}
+          >
             Login
           </Link>
         </div>
 
         <Link
-          href="/admin/signup"
+          href={ctaHref}
           className="hidden rounded bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 md:inline-block"
         >
-          Appointment
+          {ctaText}
         </Link>
       </nav>
     </header>
