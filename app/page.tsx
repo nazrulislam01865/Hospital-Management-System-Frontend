@@ -142,7 +142,7 @@
 //                   href="/admin/signup"
 //                   className="rounded bg-blue-600 px-8 py-4 text-center text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-700"
 //                 >
-//                   Appointment →
+//                   Appointment -
 //                 </Link>
 
 //                 <Link
@@ -179,21 +179,21 @@
 //                   href="#doctors"
 //                   className="inline-flex w-fit rounded bg-blue-600 px-7 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
 //                 >
-//                   Find Doctors →
+//                   Find Doctors -
 //                 </Link>
 
 //                 <Link
 //                   href="/admin/signup"
 //                   className="inline-flex w-fit rounded border border-blue-600 px-7 py-4 text-sm font-bold uppercase text-blue-600 transition hover:bg-blue-600 hover:text-white"
 //                 >
-//                   Appointment →
+//                   Appointment -
 //                 </Link>
 
 //                 <Link
 //                   href="#contact"
 //                   className="inline-flex w-fit rounded border border-blue-600 px-7 py-4 text-sm font-bold uppercase text-blue-600 transition hover:bg-blue-600 hover:text-white"
 //                 >
-//                   Emergency →
+//                   Emergency -
 //                 </Link>
 //               </div>
 //             </div>
@@ -269,7 +269,7 @@
 //                       href="/admin/signup"
 //                       className="mt-6 inline-flex font-bold text-blue-600 hover:text-blue-700"
 //                     >
-//                       Appointment →
+//                       Appointment -
 //                     </Link>
 //                   </div>
 //                 </article>
@@ -371,7 +371,7 @@
 //                   type="submit"
 //                   className="w-fit rounded bg-blue-600 px-8 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
 //                 >
-//                   Submit Now →
+//                   Submit Now -
 //                 </button>
 //               </form>
 //             </div>
@@ -432,7 +432,7 @@
 //                       href="/admin/login"
 //                       className="mt-6 inline-flex font-bold text-blue-600 hover:text-blue-700"
 //                     >
-//                       Read more →
+//                       Read more -
 //                     </Link>
 //                   </div>
 //                 </article>
@@ -459,9 +459,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Smart HealthCare | Hospital Management System",
+  title: "Smart HealthCare | Medicore Hospital Management System",
   description:
-    "Smart HealthCare is a modern hospital management system for doctors, patients, departments, appointments and healthcare services.",
+    "Medicore Healthcare is a modern hospital management system for doctors, patients, departments, appointments and healthcare services.",
   keywords: [
     "hospital management system",
     "medical center",
@@ -600,7 +600,7 @@ export default function HomePage() {
                   href="/admin/signup"
                   className="rounded bg-blue-600 px-8 py-4 text-center text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-700"
                 >
-                  Appointment →
+                  Appointment -
                 </Link>
 
                 <Link
@@ -637,21 +637,21 @@ export default function HomePage() {
                   href="#doctors"
                   className="inline-flex w-fit rounded bg-blue-600 px-7 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
                 >
-                  Find Doctors →
+                  Find Doctors -
                 </Link>
 
                 <Link
                   href="/admin/signup"
                   className="inline-flex w-fit rounded border border-blue-600 px-7 py-4 text-sm font-bold uppercase text-blue-600 transition hover:bg-blue-600 hover:text-white"
                 >
-                  Appointment →
+                  Appointment -
                 </Link>
 
                 <Link
                   href="#contact"
                   className="inline-flex w-fit rounded border border-blue-600 px-7 py-4 text-sm font-bold uppercase text-blue-600 transition hover:bg-blue-600 hover:text-white"
                 >
-                  Emergency →
+                  Emergency -
                 </Link>
               </div>
             </div>
@@ -726,7 +726,7 @@ export default function HomePage() {
                     href="/admin/signup"
                     className="mt-6 inline-flex font-bold text-blue-600 hover:text-blue-700"
                   >
-                    Appointment →
+                    Appointment -
                   </Link>
                 </article>
               ))}
@@ -827,7 +827,7 @@ export default function HomePage() {
                   type="submit"
                   className="w-fit rounded bg-blue-600 px-8 py-4 text-sm font-bold uppercase text-white transition hover:bg-blue-700"
                 >
-                  Submit Now →
+                  Submit Now -
                 </button>
               </form>
             </div>
@@ -888,7 +888,7 @@ export default function HomePage() {
                       href="/admin/login"
                       className="mt-6 inline-flex font-bold text-blue-600 hover:text-blue-700"
                     >
-                      Read more →
+                      Read more -
                     </Link>
                   </div>
                 </article>
