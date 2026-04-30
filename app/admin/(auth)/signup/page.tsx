@@ -287,7 +287,7 @@ export default function SignupPage(): JSX.Element {
             <p className="mt-6 text-center text-sm text-slate-500">
               Already have an account?{" "}
               <Link
-                href="/admin/login"
+                href="/admin"
                 className="font-semibold text-emerald-700 hover:text-emerald-800"
               >
                 Login
