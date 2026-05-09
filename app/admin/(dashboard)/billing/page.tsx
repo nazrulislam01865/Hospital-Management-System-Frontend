@@ -104,6 +104,7 @@
 //   );
 // }
 
+
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
@@ -118,7 +119,7 @@ type Patient = {
 };
 
 type Appointment = {
-  id: number;
+  id?: number;
   patient?: Patient | null;
   doctorName?: string;
   appointmentDate?: string;
@@ -209,6 +210,38 @@ function formatDate(dateValue?: string | null) {
   return date.toLocaleDateString();
 }
 
+function formatDateForInput(dateValue?: string | null) {
+  if (!dateValue) {
+    return "";
+  }
+
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateValue)) {
+    return dateValue.slice(0, 10);
+  }
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toISOString().slice(0, 10);
+}
+
+function formatCurrency(value?: number | string | null) {
+  const amount = Number(value ?? 0);
+
+  if (Number.isNaN(amount)) {
+    return "৳ 0.00";
+  }
+
+  return `৳ ${amount.toFixed(2)}`;
+}
+
+function isPaidStatus(status?: string | null) {
+  return String(status || "").toLowerCase() === "paid";
+}
+
 function getAppointmentLabel(appointment?: Appointment | number | null) {
   if (!appointment) {
     return "N/A";
@@ -222,16 +255,44 @@ function getAppointmentLabel(appointment?: Appointment | number | null) {
     return `#${appointment.id}`;
   }
 
+  if (appointment.patient?.name) {
+    return appointment.patient.name;
+  }
+
+  if (appointment.appointmentDate) {
+    return formatDate(appointment.appointmentDate);
+  }
+
   return "Linked";
+}
+
+function getAppointmentId(appointment?: Appointment | number | null) {
+  if (!appointment) {
+    return "";
+  }
+
+  if (typeof appointment === "number") {
+    return String(appointment);
+  }
+
+  return appointment.id ? String(appointment.id) : "";
 }
 
 export default function BillingPage() {
   const [bills, setBills] = useState<Bill[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [form, setForm] = useState(initialForm);
+  const [editingBillId, setEditingBillId] = useState<number | null>(null);
+  const [serviceChargeEdits, setServiceChargeEdits] = useState<
+    Record<number, string>
+  >({});
 
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+  const [payingBillId, setPayingBillId] = useState<number | null>(null);
+  const [updatingChargeBillId, setUpdatingChargeBillId] = useState<
+    number | null
+  >(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -253,8 +314,16 @@ export default function BillingPage() {
       const appointmentsData =
         extractData<Appointment[]>(appointmentsResponse);
 
-      setBills(Array.isArray(billsData) ? billsData : []);
+      const normalizedBills = Array.isArray(billsData) ? billsData : [];
+
+      setBills(normalizedBills);
       setAppointments(Array.isArray(appointmentsData) ? appointmentsData : []);
+      setServiceChargeEdits(
+        normalizedBills.reduce<Record<number, string>>((acc, bill) => {
+          acc[bill.id] = String(bill.serviceCharge ?? "");
+          return acc;
+        }, {})
+      );
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
@@ -274,6 +343,31 @@ export default function BillingPage() {
     }));
   }
 
+  function handleEditBill(bill: Bill) {
+    if (isPaidStatus(bill.status)) {
+      setError("Paid bill cannot be updated.");
+      setMessage("");
+      return;
+    }
+
+    setError("");
+    setMessage("");
+    setEditingBillId(bill.id);
+    setForm({
+      patientName: bill.patientName || "",
+      serviceCharge: String(bill.serviceCharge ?? ""),
+      billingDate: formatDateForInput(bill.billingDate),
+      appointmentId: getAppointmentId(bill.appointment),
+    });
+  }
+
+  function handleCancelEdit() {
+    setEditingBillId(null);
+    setForm(initialForm);
+    setError("");
+    setMessage("");
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -282,9 +376,25 @@ export default function BillingPage() {
       return;
     }
 
+    const serviceCharge = Number(form.serviceCharge);
+
+    if (Number.isNaN(serviceCharge) || serviceCharge < 0) {
+      setError("Service charge must be a valid non-negative number.");
+      return;
+    }
+
+    if (editingBillId !== null) {
+      const selectedBill = bills.find((bill) => bill.id === editingBillId);
+
+      if (selectedBill && isPaidStatus(selectedBill.status)) {
+        setError("Paid bill cannot be updated.");
+        return;
+      }
+    }
+
     const billPayload = {
       patientName: form.patientName,
-      serviceCharge: Number(form.serviceCharge),
+      serviceCharge,
       billingDate: form.billingDate,
       appointmentId: form.appointmentId ? Number(form.appointmentId) : undefined,
     };
@@ -294,14 +404,26 @@ export default function BillingPage() {
       setError("");
       setMessage("");
 
-      await axios.post(
-        `${API_ENDPOINT}/admin/bills`,
-        billPayload,
-        getAuthHeaders()
-      );
+      if (editingBillId !== null) {
+        await axios.patch(
+          `${API_ENDPOINT}/admin/bills/${editingBillId}`,
+          billPayload,
+          getAuthHeaders()
+        );
+
+        setMessage("Bill updated successfully.");
+      } else {
+        await axios.post(
+          `${API_ENDPOINT}/admin/bills`,
+          billPayload,
+          getAuthHeaders()
+        );
+
+        setMessage("Bill created successfully.");
+      }
 
       setForm(initialForm);
-      setMessage("Bill created successfully.");
+      setEditingBillId(null);
       await loadPageData();
     } catch (err) {
       setError(getErrorMessage(err));
@@ -310,13 +432,55 @@ export default function BillingPage() {
     }
   }
 
-  async function handlePayBill(id: number) {
+  async function handleUpdateServiceCharge(bill: Bill) {
+    if (isPaidStatus(bill.status)) {
+      setError("Paid bill service charge cannot be updated.");
+      setMessage("");
+      return;
+    }
+
+    const nextServiceCharge = Number(serviceChargeEdits[bill.id]);
+
+    if (Number.isNaN(nextServiceCharge) || nextServiceCharge < 0) {
+      setError("Service charge must be a valid non-negative number.");
+      setMessage("");
+      return;
+    }
+
     try {
+      setUpdatingChargeBillId(bill.id);
       setError("");
       setMessage("");
 
       await axios.patch(
-        `${API_ENDPOINT}/admin/bills/${id}/pay`,
+        `${API_ENDPOINT}/admin/bills/${bill.id}/service-charge`,
+        { serviceCharge: nextServiceCharge },
+        getAuthHeaders()
+      );
+
+      setMessage("Service charge updated successfully.");
+      await loadPageData();
+    } catch (err) {
+      setError(getErrorMessage(err));
+    } finally {
+      setUpdatingChargeBillId(null);
+    }
+  }
+
+  async function handlePayBill(bill: Bill) {
+    if (isPaidStatus(bill.status)) {
+      setError("This bill is already paid.");
+      setMessage("");
+      return;
+    }
+
+    try {
+      setPayingBillId(bill.id);
+      setError("");
+      setMessage("");
+
+      await axios.patch(
+        `${API_ENDPOINT}/admin/bills/${bill.id}/pay`,
         {},
         getAuthHeaders()
       );
@@ -325,6 +489,8 @@ export default function BillingPage() {
       await loadPageData();
     } catch (err) {
       setError(getErrorMessage(err));
+    } finally {
+      setPayingBillId(null);
     }
   }
 
@@ -335,6 +501,11 @@ export default function BillingPage() {
 
       await axios.delete(`${API_ENDPOINT}/admin/bills/${id}`, getAuthHeaders());
 
+      if (editingBillId === id) {
+        setEditingBillId(null);
+        setForm(initialForm);
+      }
+
       setMessage("Bill deleted successfully.");
       await loadPageData();
     } catch (err) {
@@ -342,21 +513,13 @@ export default function BillingPage() {
     }
   }
 
+  const isEditing = editingBillId !== null;
+
   return (
     <div>
       <PageHeader
         title="Billing"
-        description="Manage patient invoices, service charges, payment date, and payment status."
-        action={
-          <button
-            form="billing-form"
-            type="submit"
-            disabled={loading}
-            className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {loading ? "Creating..." : "Create Bill"}
-          </button>
-        }
+        description="Manage patient invoices using the fields supported by the backend bill API."
       />
 
       {message ? (
@@ -372,9 +535,21 @@ export default function BillingPage() {
       ) : null}
 
       <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold text-slate-950">
-          Billing Form
-        </h2>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-semibold text-slate-950">
+            {isEditing ? `Update Bill #${editingBillId}` : "Billing Form"}
+          </h2>
+
+          {isEditing ? (
+            <button
+              type="button"
+              onClick={handleCancelEdit}
+              className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Cancel Update
+            </button>
+          ) : null}
+        </div>
 
         <form
           id="billing-form"
@@ -389,16 +564,11 @@ export default function BillingPage() {
             required
           />
 
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Patient Phone not available in backend"
-            disabled
-          />
-
           <select
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm"
+            className="rounded-xl border border-slate-200 px-4 py-3 text-sm disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
             value={form.appointmentId}
             onChange={(e) => handleAppointmentChange(e.target.value)}
+            disabled={isEditing}
           >
             <option value="">No Appointment</option>
             {appointments.map((appointment) => (
@@ -408,26 +578,6 @@ export default function BillingPage() {
               </option>
             ))}
           </select>
-
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Room Number not available in backend"
-            disabled
-          />
-
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Doctor Charge not available in backend"
-            type="number"
-            disabled
-          />
-
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Room Charge not available in backend"
-            type="number"
-            disabled
-          />
 
           <input
             className="rounded-xl border border-slate-200 px-4 py-3 text-sm"
@@ -442,27 +592,6 @@ export default function BillingPage() {
           />
 
           <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Medicine Charge not available in backend"
-            type="number"
-            disabled
-          />
-
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Discount not available in backend"
-            type="number"
-            disabled
-          />
-
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            placeholder="Paid Amount handled by Pay button"
-            type="number"
-            disabled
-          />
-
-          <input
             className="rounded-xl border border-slate-200 px-4 py-3 text-sm"
             type="date"
             value={form.billingDate}
@@ -470,19 +599,31 @@ export default function BillingPage() {
             required
           />
 
-          <select
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            disabled
-          >
-            <option>Payment Method not available in backend</option>
-          </select>
+          <div className="flex justify-end gap-2 md:col-span-2 xl:col-span-4">
+            {isEditing ? (
+              <button
+                type="button"
+                onClick={handleCancelEdit}
+                className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+            ) : null}
 
-          <select
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-500"
-            disabled
-          >
-            <option>Status handled by backend</option>
-          </select>
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {loading
+                ? isEditing
+                  ? "Updating..."
+                  : "Creating..."
+                : isEditing
+                  ? "Update Bill"
+                  : "Create Bill"}
+            </button>
+          </div>
         </form>
       </section>
 
@@ -497,23 +638,13 @@ export default function BillingPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1300px] text-left text-sm">
+          <table className="w-full min-w-[1200px] text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-5 py-3">Invoice</th>
                 <th className="px-5 py-3">Patient</th>
-                <th className="px-5 py-3">Phone</th>
                 <th className="px-5 py-3">Appointment</th>
-                <th className="px-5 py-3">Room</th>
-                <th className="px-5 py-3">Doctor</th>
-                <th className="px-5 py-3">Room Charge</th>
-                <th className="px-5 py-3">Service</th>
-                <th className="px-5 py-3">Medicine</th>
-                <th className="px-5 py-3">Discount</th>
-                <th className="px-5 py-3">Total</th>
-                <th className="px-5 py-3">Paid</th>
-                <th className="px-5 py-3">Due</th>
-                <th className="px-5 py-3">Method</th>
+                <th className="px-5 py-3">Service Charge</th>
                 <th className="px-5 py-3">Billing Date</th>
                 <th className="px-5 py-3">Payment Date</th>
                 <th className="px-5 py-3">Status</th>
@@ -525,7 +656,7 @@ export default function BillingPage() {
               {pageLoading ? (
                 <tr>
                   <td
-                    colSpan={18}
+                    colSpan={8}
                     className="px-5 py-8 text-center text-slate-500"
                   >
                     Loading bills...
@@ -534,88 +665,106 @@ export default function BillingPage() {
               ) : null}
 
               {!pageLoading &&
-                bills.map((bill) => (
-                  <tr key={bill.id} className="hover:bg-slate-50">
-                    <td className="px-5 py-4 font-semibold text-slate-900">
-                      Invoice #{bill.id}
-                    </td>
+                bills.map((bill) => {
+                  const paid = isPaidStatus(bill.status);
+                  const updatingCharge = updatingChargeBillId === bill.id;
+                  const paying = payingBillId === bill.id;
 
-                    <td className="px-5 py-4 text-slate-700">
-                      {bill.patientName}
-                    </td>
+                  return (
+                    <tr key={bill.id} className="hover:bg-slate-50">
+                      <td className="px-5 py-4 font-semibold text-slate-900">
+                        Invoice #{bill.id}
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
+                      <td className="px-5 py-4 text-slate-700">
+                        {bill.patientName}
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">
-                      {getAppointmentLabel(bill.appointment)}
-                    </td>
+                      <td className="px-5 py-4 text-slate-700">
+                        {getAppointmentLabel(bill.appointment)}
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
+                      <td className="px-5 py-4 text-slate-700">
+                        {formatCurrency(bill.serviceCharge)}
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
+                      <td className="px-5 py-4 text-slate-700">
+                        {formatDate(bill.billingDate)}
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
+                      <td className="px-5 py-4 text-slate-700">
+                        {formatDate(bill.paymentDate)}
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">
-                      ৳ {bill.serviceCharge}
-                    </td>
+                      <td className="px-5 py-4">
+                        <StatusBadge status={bill.status || "Unpaid"} />
+                      </td>
 
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
+                      <td className="px-5 py-4">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleEditBill(bill)}
+                            disabled={paid}
+                            className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            Update Bill
+                          </button>
 
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              min={0}
+                              value={
+                                serviceChargeEdits[bill.id] ??
+                                String(bill.serviceCharge ?? "")
+                              }
+                              onChange={(e) =>
+                                setServiceChargeEdits((prev) => ({
+                                  ...prev,
+                                  [bill.id]: e.target.value,
+                                }))
+                              }
+                              disabled={paid || updatingCharge}
+                              className="w-28 rounded-lg border border-slate-200 px-3 py-2 text-xs disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+                            />
 
-                    <td className="px-5 py-4 font-semibold text-slate-900">
-                      ৳ {bill.serviceCharge}
-                    </td>
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateServiceCharge(bill)}
+                              disabled={paid || updatingCharge}
+                              className="rounded-lg bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {updatingCharge ? "Updating..." : "Update Charge"}
+                            </button>
+                          </div>
 
-                    <td className="px-5 py-4 text-slate-700">
-                      {bill.status === "Paid" ? `৳ ${bill.serviceCharge}` : "৳ 0"}
-                    </td>
+                          <button
+                            type="button"
+                            onClick={() => handlePayBill(bill)}
+                            disabled={paid || paying}
+                            className="rounded-lg bg-green-50 px-3 py-2 text-xs font-semibold text-green-700 hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {paid ? "Paid" : paying ? "Paying..." : "Pay"}
+                          </button>
 
-                    <td className="px-5 py-4 text-slate-700">
-                      {bill.status === "Paid" ? "৳ 0" : `৳ ${bill.serviceCharge}`}
-                    </td>
-
-                    <td className="px-5 py-4 text-slate-700">N/A</td>
-
-                    <td className="px-5 py-4 text-slate-700">
-                      {formatDate(bill.billingDate)}
-                    </td>
-
-                    <td className="px-5 py-4 text-slate-700">
-                      {formatDate(bill.paymentDate)}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      <StatusBadge status={bill.status || "Unpaid"} />
-                    </td>
-
-                    <td className="px-5 py-4">
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handlePayBill(bill.id)}
-                          className="rounded-lg bg-green-50 px-3 py-2 text-xs font-semibold text-green-700 hover:bg-green-100"
-                        >
-                          Pay
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteBill(bill.id)}
-                          className="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-100"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteBill(bill.id)}
+                            className="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-100"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
 
               {!pageLoading && bills.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={18}
+                    colSpan={8}
                     className="px-5 py-8 text-center text-slate-500"
                   >
                     No bills found.
@@ -629,3 +778,4 @@ export default function BillingPage() {
     </div>
   );
 }
+
