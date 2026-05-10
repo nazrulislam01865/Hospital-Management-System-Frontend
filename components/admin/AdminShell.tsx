@@ -412,32 +412,32 @@ const navItems = [
   },
   {
     label: "Patients",
-    href: "/admin/patients",
+    href: "/admin/dashboard/patients",
     icon: UsersRound,
   },
   {
     label: "Appointments",
-    href: "/admin/appointments",
+    href: "/admin/dashboard/appointments",
     icon: CalendarDays,
   },
   {
     label: "Rooms",
-    href: "/admin/rooms",
+    href: "/admin/dashboard/rooms",
     icon: BedDouble,
   },
   {
     label: "Billing",
-    href: "/admin/billing",
+    href: "/admin/dashboard/billing",
     icon: ReceiptText,
   },
   {
     label: "Admins",
-    href: "/admin/admins",
+    href: "/admin/dashboard/admins",
     icon: ShieldCheck,
   },
   {
     label: "Departments",
-    href: "/admin/departments",
+    href: "/admin/dashboard/departments",
     icon: Building2,
   },
 ];
